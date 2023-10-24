@@ -172,5 +172,4 @@ public class CloudPricingCalculatorPage {
         sendEmail.click();
     }
 
-
 }
