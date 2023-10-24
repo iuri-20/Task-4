@@ -46,6 +46,8 @@ public class GoogleCloudTest {
         calculatorObj.setSeriesValue();
         calculatorObj.setMachineType();
         calculatorObj.addGpu();
+        calculatorObj.setGPUType();
+        calculatorObj.setNumberOfGPUs();
         calculatorObj.setLocalSSDD();
         calculatorObj.setDataCenterLocation();
         calculatorObj.setCommittedUsage();
@@ -65,9 +67,12 @@ public class GoogleCloudTest {
 
         driver.switchTo().window(tab1);
         calculatorObj.getToCalculator();
+        calculatorObj.clickEmailEstimate();
+        calculatorObj.fillInEmailInput();
         calculatorObj.sendEstimateToEmail();
 
         driver.switchTo().window(tab2);
+        emailObj.closePopUP();
         emailObj.checkInbox();
         emailObj.refreshEmail();
         String emailEstimatedPrice = emailObj.getPriceEstimate();

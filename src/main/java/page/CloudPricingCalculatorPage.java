@@ -14,6 +14,7 @@ import static wait.ExplicitWaitClass.*;
 public class CloudPricingCalculatorPage {
 
     private final WebDriver driver;
+    private static final String IFRAME_LOCATOR = "//article[@id='cloud-site']/devsite-iframe/iframe";
 
 
     @FindBy(xpath = "//md-tab-item//div[@class='tab-holder compute']")
@@ -23,9 +24,15 @@ public class CloudPricingCalculatorPage {
     private WebElement instances;
 
     @FindBy(xpath = "//md-select-value[.//div[normalize-space(.)='E2']]")
+    private WebElement seriesOptions;
+
+    @FindBy(xpath = "//md-option[@value='n1' and normalize-space(.)='N1']")
     private WebElement seriesValue;
 
     @FindBy(xpath = "//md-select-value[.//div[normalize-space(.)='n1-standard-1 (vCPUs: 1, RAM: 3.75GB)']]")
+    private WebElement machineTypeOptions;
+
+    @FindBy(xpath = "//md-option[@value='CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-8' and normalize-space(.//div)='n1-standard-8 (vCPUs: 8, RAM: 30GB)']")
     private WebElement machineType;
 
     @FindBy(xpath = "//form[@name='ComputeEngineForm']//md-checkbox[@aria-label='Add GPUs']")
@@ -34,11 +41,20 @@ public class CloudPricingCalculatorPage {
     @FindBy(xpath = "//md-select[@aria-label='GPU type']")
     private WebElement typeGPU;
 
+    @FindBy(xpath = "//md-option[@value='NVIDIA_TESLA_V100' and normalize-space(.//div)='NVIDIA Tesla V100']")
+    private WebElement GPUTypeValue;
+
     @FindBy(xpath = "//md-select[@placeholder='Number of GPUs']")
     private WebElement numberOfGPUs;
 
+    @FindBy(xpath = "//md-option[@value='1' and normalize-space(.//div)='1']")
+    private WebElement GPUNumberValue;
+
     @FindBy(id = "select_value_label_464")
     private WebElement localSSDDropdown;
+
+    @FindBy(id = "select_option_491")
+    private WebElement localSSDValue;
 
     @FindBy(id = "select_132")
     private WebElement dataCenterLocation;
@@ -48,6 +64,9 @@ public class CloudPricingCalculatorPage {
 
     @FindBy(xpath = "//md-select-value[contains(.//div, 'None')]")
     private WebElement committedUsage;
+
+    @FindBy(id = "select_option_137")
+    private WebElement commitUsageValue;
 
     @FindBy(xpath = "//form[@name='ComputeEngineForm']//button[contains(text(), 'Add to Estimate')]")
     private WebElement addToEstimate;
@@ -75,7 +94,7 @@ public class CloudPricingCalculatorPage {
     }
 
     public void getToCalculator() {
-        WebElement iframe = waitFroElementPresence(driver, Duration.ofSeconds(15), By.xpath("//article[@id='cloud-site']/devsite-iframe/iframe"));
+        WebElement iframe = waitFroElementPresence(driver, Duration.ofSeconds(15), By.xpath(IFRAME_LOCATOR));
         driver.switchTo().frame(iframe);
         driver.switchTo().frame("myFrame");
     }
@@ -87,31 +106,33 @@ public class CloudPricingCalculatorPage {
     }
 
     public void setSeriesValue() {
-        seriesValue.click();
-        WebElement element = waitForElementLocatedBy(driver, Duration.ofSeconds(15), By.xpath("//md-option[@value='n1' and normalize-space(.)='N1']"));
-        element.click();
+        seriesOptions.click();
+        waitForElement(driver, Duration.ofSeconds(15), seriesValue).click();
     }
 
     public void setMachineType() {
-        machineType.click();
-        WebElement element = waitForElementLocatedBy(driver, Duration.ofSeconds(15), By.xpath("//md-option[@value='CP-COMPUTEENGINE-VMIMAGE-N1-STANDARD-8' and normalize-space(.//div)='n1-standard-8 (vCPUs: 8, RAM: 30GB)']"));
-        element.click();
-//        return this;
+        machineTypeOptions.click();
+        waitForElement(driver, Duration.ofSeconds(15), machineType).click();
     }
 
     public void addGpu() {
         checkboxGPU.click();
-        typeGPU.click();
-        waitForElementLocatedBy(driver, Duration.ofSeconds(15), By.xpath("//md-option[@value='NVIDIA_TESLA_V100' and normalize-space(.//div)='NVIDIA Tesla V100']")).click();
-
-        numberOfGPUs.click();
-        waitForElementLocatedBy(driver, Duration.ofSeconds(15), By.xpath("//md-option[@value='1' and normalize-space(.//div)='1']")).click();
-
     }
+
+    public void setGPUType() {
+        typeGPU.click();
+        waitForElement(driver, Duration.ofSeconds(15), GPUTypeValue).click();
+    }
+
+    public void setNumberOfGPUs() {
+        numberOfGPUs.click();
+        waitForElement(driver, Duration.ofSeconds(15), GPUNumberValue).click();
+    }
+
 
     public void setLocalSSDD() {
         localSSDDropdown.click();
-        waitForElementLocatedBy(driver, Duration.ofSeconds(15), By.id("select_option_491")).click();
+        waitForElement(driver, Duration.ofSeconds(15), localSSDValue).click();
     }
 
     public void setDataCenterLocation() {
@@ -122,7 +143,7 @@ public class CloudPricingCalculatorPage {
 
     public void setCommittedUsage() {
         committedUsage.click();
-        waitForElementLocatedBy(driver, Duration.ofSeconds(5), By.id("select_option_137")).click();
+        waitForElement(driver, Duration.ofSeconds(5), commitUsageValue).click();
     }
 
 
@@ -138,13 +159,17 @@ public class CloudPricingCalculatorPage {
         return estimatedPrice2.getText();
     }
 
-    public void sendEstimateToEmail() {
-
+    public void clickEmailEstimate() {
         emailEstimate.click();
+    }
+
+    public void fillInEmailInput() {
         emailInput.click();
         emailInput.sendKeys(Keys.CONTROL, "v");
-        sendEmail.click();
+    }
 
+    public void sendEstimateToEmail() {
+        sendEmail.click();
     }
 
 
