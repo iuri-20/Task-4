@@ -13,6 +13,7 @@ import static wait.ExplicitWaitClass.waitForElement;
 public class GoogleCloudHomePage {
 
     private final WebDriver driver;
+    private final String BASE_URL = "https://cloud.google.com/";
 
     @FindBy(name = "q")
     private WebElement searchButton;
@@ -29,18 +30,21 @@ public class GoogleCloudHomePage {
         PageFactory.initElements(driver, this);
     }
 
-    public void openPage(String url) {
-        driver.get(url);
+    public GoogleCloudHomePage openPage() {
+        driver.get(BASE_URL);
+        return this;
     }
 
-    public void search(String input) {
+    public GoogleCloudHomePage search(String input) {
         searchButton.click();
         searchButton.sendKeys(input);
         searchButton.sendKeys(Keys.RETURN);
+        return this;
     }
 
-    public void goToCalculator() {
+    public CloudPricingCalculatorPage goToCalculator() {
         waitForElement(driver, Duration.ofSeconds(5), priceCalculatorLink).click();
+        return new CloudPricingCalculatorPage(driver);
     }
 
 }

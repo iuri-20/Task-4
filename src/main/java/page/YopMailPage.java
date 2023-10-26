@@ -11,11 +11,11 @@ import java.time.Duration;
 
 import static wait.ExplicitWaitClass.*;
 
-public class YopMailPage {
+public class YopMailPage{
 
-    private static final String URL = "https://yopmail.com/email-generator";
+
     private final WebDriver driver;
-
+    private static final String BASE_URL = "https://yopmail.com/email-generator";
     private static final String  POPUP_IFRAME = "aswift_3";
     private static final String INBOX_LIST_IFRAME = "ifinbox";
     private static final String INBOX_CONTENT_IFRAME = "ifmail";
@@ -46,15 +46,17 @@ public class YopMailPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void openPage() {
-        driver.get(URL);
+    public YopMailPage openPage() {
+        driver.get(BASE_URL);
+        return this;
     }
 
-    public void copyEmil() {
+    public YopMailPage copyEmil() {
         waitForElement(driver, Duration.ofSeconds(15), emailCopy).click();
+        return this;
     }
 
-    public void closePopUP() {
+    public YopMailPage closePopUP() {
         WebElement iframe = waitFroElementPresence(driver, Duration.ofSeconds(15), By.id(POPUP_IFRAME));
         if (iframe.isDisplayed()) {
             driver.switchTo().frame(iframe);
@@ -62,20 +64,22 @@ public class YopMailPage {
             closeButton.click();
             driver.switchTo().defaultContent();
         }
+        return this;
     }
 
-    public void checkInbox() {
+    public YopMailPage checkInbox() {
         waitForElement(driver, Duration.ofSeconds(15), inbox).click();
+        return this;
     }
 
-    public void refreshEmail() {
+    public YopMailPage refreshEmail() {
         WebElement iframe = waitFroElementPresence(driver, Duration.ofSeconds(15), By.id(INBOX_LIST_IFRAME));
         WebElement refresh = waitForElement(driver, Duration.ofSeconds(15), refreshButton);
         for (int i = 0; i < 10; ++i) {
             refresh.click();
             try {
                 driver.switchTo().frame(iframe);
-                waitForElementLocatedBy(driver, Duration.ofSeconds(15),By.xpath("//div[contains(text(), 'Google Cloud Price Estimate')]"));
+                waitForElementLocatedBy(driver, By.xpath("//div[contains(text(), 'Google Cloud Price Estimate')]"));
             } catch (TimeoutException ex) {
                 driver.switchTo().defaultContent();
                 continue;
@@ -83,12 +87,13 @@ public class YopMailPage {
             break;
         }
         driver.switchTo().defaultContent();
+        return this;
 
     }
 
 
     public String getPriceEstimate() {
-        WebElement iframe = waitForElementLocatedBy(driver, Duration.ofSeconds(15), By.id(INBOX_CONTENT_IFRAME));
+        WebElement iframe = waitForElementLocatedBy(driver, By.id(INBOX_CONTENT_IFRAME));
         driver.switchTo().frame(iframe);
         return estimatedPrice.getText();
     }

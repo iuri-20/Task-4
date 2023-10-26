@@ -10,8 +10,8 @@ import java.time.Duration;
 
 public class ExplicitWaitClass {
 
-    public static WebElement waitForElementLocatedBy(WebDriver driver, Duration timeout, By by) {
-        return new WebDriverWait(driver, timeout)
+    public static WebElement waitForElementLocatedBy(WebDriver driver, By by) {
+        return new WebDriverWait(driver, Duration.ofSeconds(15))
                 .until(ExpectedConditions.elementToBeClickable(by));
     }
 
@@ -26,3 +26,4 @@ public class ExplicitWaitClass {
     }
 
 }
+

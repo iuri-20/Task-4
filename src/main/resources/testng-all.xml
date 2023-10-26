@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/iukox/IdeaProjects/Task_4/src/test/java/test">
+        <classes>
+            <class name="test.CalculatorSmokeTest">
+            <methods>
+                <include name="calculatorTest"/>
+            </methods>
+            </class>
+            <class name="test.GoogleCloudTest">
+                <methods>
+                    <include name="testCalculatePrice"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
