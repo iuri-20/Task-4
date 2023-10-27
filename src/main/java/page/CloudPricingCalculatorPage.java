@@ -17,6 +17,13 @@ public class CloudPricingCalculatorPage {
 
     private final WebDriver driver;
     private static final String IFRAME_LOCATOR = "//article[@id='cloud-site']/devsite-iframe/iframe";
+    private static final String SERIES_XPATH = "//md-option[@value= '%s']";
+    private static final String MACHINE_TYPE_XPATH = "//md-option//div[contains(text(), '%s')]";
+    private static final String GPU_TYPE_XPATH = "//div[contains(text(), '%s')]";
+    private static final String GPU_NUMBER_XPATH = "//div[contains(@class,'md-clickable')]//div[contains(text(), '%s')]";
+    private static final String LOCAL_SSD_XPATH = "//div[@class='md-text ng-binding' and contains(text(), '%s')]";
+    private static final String DATACENTER_LOCATION_XPATH = "//div[contains(@class,'md-clickable')]//div[contains(text(), '%s')]";
+    private static final String COMMIT_USAGE_XPATH = "//div[contains(@class,'md-clickable')]//div[contains(text(), '%s')]";
 
 
     @FindBy(xpath = "//md-tab-item//div[@class='tab-holder compute']")
@@ -93,13 +100,14 @@ public class CloudPricingCalculatorPage {
 
     public CloudPricingCalculatorPage setSeriesValue(PriceData data) {
         seriesOptions.click();
-        waitForElementLocatedBy(driver, By.xpath("//md-option[@value='" + data.getSeries() + "']")).click();
+        waitForElementLocatedBy(driver, By.xpath(String.format(SERIES_XPATH,  data.getSeries()))).click();
         return this;
     }
 
+
     public CloudPricingCalculatorPage setMachineTypeValue(PriceData data) {
         machineTypeOptions.click();
-        waitForElementLocatedBy(driver, By.xpath("//md-option//div[contains(text(), '" + data.getMachineType() + "')]")).click();
+        waitForElementLocatedBy(driver, By.xpath(String.format(MACHINE_TYPE_XPATH, data.getMachineType()))).click();
         return this;
     }
 
@@ -110,32 +118,32 @@ public class CloudPricingCalculatorPage {
 
     public CloudPricingCalculatorPage setGPUType(PriceData data) {
         typeGPU.click();
-        waitForElementLocatedBy(driver, By.xpath("//div[contains(text(), '" + data.getTypeOfGPU() + "')]")).click();
+        waitForElementLocatedBy(driver, By.xpath(String.format(GPU_TYPE_XPATH, data.getTypeOfGPU()))).click();
         return this;
     }
 
     public CloudPricingCalculatorPage setNumberOfGPUsValue(PriceData data) {
         numberOfGPUs.click();
-        waitForElementLocatedBy(driver, By.xpath("//div[contains(@class,'md-clickable')]//div[contains(text(), '" + data.getNumberOfGPUs() + "')]")).click();
+        waitForElementLocatedBy(driver, By.xpath(String.format(GPU_NUMBER_XPATH, data.getNumberOfGPUs()))).click();
         return this;
     }
 
 
     public CloudPricingCalculatorPage setLocalSSDD(PriceData data) {
         localSSDDropdown.click();
-        waitForElementLocatedBy(driver, By.xpath("//div[@class='md-text ng-binding' and contains(text(), '" + data.getLocalSSD() + "')]")).click();
+        waitForElementLocatedBy(driver, By.xpath(String.format(LOCAL_SSD_XPATH, data.getLocalSSD()))).click();
         return this;
     }
 
     public CloudPricingCalculatorPage setDataCenterLocation(PriceData data) {
         dataCenterLocation.click();
-        waitForElementLocatedBy(driver, By.xpath("//div[contains(@class,'md-clickable')]//div[contains(text(), '" + data.getDatacenterLocation() + "')]")).click();
+        waitForElementLocatedBy(driver, By.xpath(String.format(DATACENTER_LOCATION_XPATH, data.getDatacenterLocation()))).click();
         return this;
     }
 
     public CloudPricingCalculatorPage setCommittedUsageValue(PriceData data) {
         committedUsage.click();
-        waitForElementLocatedBy(driver, By.xpath("//div[contains(@class,'md-clickable')]//div[contains(text(), '" + data.getCommittedUsage() + "')]")).click();
+        waitForElementLocatedBy(driver, By.xpath(String.format(COMMIT_USAGE_XPATH, data.getCommittedUsage()))).click();
         return this;
     }
 
